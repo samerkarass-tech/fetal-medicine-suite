@@ -1,0 +1,34 @@
+# 13 — Backlog (parked items)
+
+**Purpose:** Single source of truth for everything intentionally deferred or known-broken. Replaces ad-hoc "I'll remember it later." Update at end of each session.
+
+## Bugs
+
+- **Drag-to-reorder in Waiting Queue doesn't persist** — rows are draggable but snap back on drop. (Slice 1.5 known issue.)
+- **Queue's "Open chart" navigation bypasses the leave-chart nudge** — small design gap from Task 1.5-D.
+- **Intake check-in creates duplicate appointments** instead of mutating existing one. (Slice 1.6.)
+- **Patients regenerate from seed every reload** — they don't persist across page reloads. Affects testing of data-shape changes. (Slice 1.6.)
+- **localStorage uses three keys, not two:** `fetalMedicineSuite.v3` (appts/settings), `clinicPatients` (legacy/dead — has old shape `name`/`age`/`visits`, may be safe to delete), and live patients regenerate from seed (no stable key). Untangle during data-layer refactor.
+- **Legacy `obstetricsHistory` key vs current `priorPregnancies` key** — fallback exists, retire later.
+- **Cycle-scoped labs leak into MIP via free-text regex** — Slice 4 boundary.
+- **AutoFlagSyncEngine vs spec's "no auto-flagging" principle** — decide before Slice 5b.
+- **Trimester scan grids still structured** (v1.1 wants 3-card pinned strip) — Slice 3.
+- **Print bug:** `@media print` hides everything via `body *` visibility:hidden, only un-hides `#rx-print-area` — fix in Slice 3.
+- **`deleteEpisode` reads `patients` from closure scope** (theoretical staleness with rapid concurrent deletes). Functionally fine; note for future.
+
+## Deferred features
+
+- **Collapsible visit cards across all visit-list templates** (Gynae, Obstetrics, future templates) — implement as a reusable cross-cutting pattern in Slice 5 or dedicated UI polish pass. Don't add per-template.
+- **Infertility-type visit unfolds extra fields** (per spec `02_GYNAE_TRUNK.md`) — deferred from Task 2-C. Decide first whether to keep template-level fertility fields, move them per-visit-when-Infertility, or hybrid. Revisit after Slice 2 core is done.
+- **Surgery-as-episode unification** with the existing global `surgeries[]` array. Currently two surgery models coexist. Don't unify in Slice 2; revisit when scoping the surgery branch flow.
+- **Carry-forward from Gynae visit to spawned cycle** (planned protocol, drug list, planned start date). Slice 4 (ART).
+- **`hubCycles[]` → free-standing OI/FET migration.** One-time migration that retires the Infertility hub umbrella. Slice 4. Spec: `12_IMPLEMENTATION_NOTES.md` v1.1.
+- **All v1 deferrals from `12_IMPLEMENTATION_NOTES.md`** — LLM Briefing, auto-flagging, proactive pin suggestions, layered annotations, audit log, bulk migration, trend graphs, recurring reminders, auto-routed WhatsApp inbound. Tracked in that file; this entry is the cross-reference.
+
+## Spec edits pending
+
+- **Tighten bilingual scope in `00_INDEX.md`** — clarify doctor-only UI is EN-only; EN+AR is for patient-facing, secretary-facing, or printed/sent content. Bump to v1.2 next time the spec is edited.
+
+## Resolved (delete from this list when committed)
+
+_(empty)_
